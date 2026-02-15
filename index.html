@@ -991,7 +991,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', 'Inter', sans-serif; }
   // === State ===
   let questAccepted = false;
   let dodgeCount = 0;
-  let isHovering = false;
 
   // === DOM refs ===
   const btnYes = document.getElementById('btnYes');
@@ -1038,27 +1037,11 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', 'Inter', sans-serif; }
     funnyCaption.textContent = dodgeCount > 3 ? 'Still trying? 😏' : 'Nice try 😌';
   }
 
-  function resetNoButton() {
-    setTimeout(() => {
-      if (!isHovering) {
-        btnNo.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
-      }
-    }, 300);
-  }
+  // Desktop: dodge on hover
+  btnNo.addEventListener('mouseenter', () => { dodgeButton(); });
 
-  btnNo.addEventListener('mouseenter', () => { isHovering = true; dodgeButton(); });
-  btnNo.addEventListener('mouseleave', () => { isHovering = false; resetNoButton(); });
-  btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); isHovering = true; dodgeButton(); }, { passive: false });
-  btnNo.addEventListener('touchend', () => { isHovering = false; resetNoButton(); });
-
-  // Mobile: dodge NO button when user taps anywhere on the acceptance gate area
-  acceptanceGate.addEventListener('touchstart', (e) => {
-    // Don't interfere with YES button
-    if (e.target === btnYes || btnYes.contains(e.target)) return;
-    // Don't double-fire if tapping directly on NO button
-    if (e.target === btnNo || btnNo.contains(e.target)) return;
-    dodgeButton();
-  }, { passive: true });
+  // Mobile: dodge on touch
+  btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeButton(); }, { passive: false });
 
   // === Confetti ===
   function launchConfetti() {
