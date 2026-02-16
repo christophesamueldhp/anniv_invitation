@@ -1169,9 +1169,9 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', 'Inter', sans-serif; }
   }
 
   // === Accept Quest ===
-  function activateQuest(withAnimation) {
+  btnYes.addEventListener('click', () => {
+    if (questAccepted) return;
     questAccepted = true;
-    localStorage.setItem('questAccepted', 'true');
 
     acceptanceGate.style.display = 'none';
     lockedPreview.style.display = 'none';
@@ -1179,22 +1179,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', 'Inter', sans-serif; }
     revealedContent.classList.add('visible');
     progressBar.classList.add('visible');
 
-    if (withAnimation) {
-      launchConfetti();
-      setTimeout(() => {
-        questAcceptedBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 800);
-    }
-  }
-
-  // Restore state on page load
-  if (localStorage.getItem('questAccepted') === 'true') {
-    activateQuest(false);
-  }
-
-  btnYes.addEventListener('click', () => {
-    if (questAccepted) return;
-    activateQuest(true);
+    launchConfetti();
+    setTimeout(() => {
+      questAcceptedBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 800);
   });
 
   // === Scroll Progress (Vertical) ===
